@@ -1,3 +1,14 @@
+<script setup>
+  import swal from "sweetalert";
+  import router from "../router";
+  const handleLogout = () => {
+    localStorage.removeItem("asistenId");
+    localStorage.removeItem("adminId");
+    swal("Berhasil Keluar", "Logout Akun Berhasil", "success").then(() => {
+      router.push("/");
+    });
+  };
+</script>
 <template>
   <nav
     class="fixed w-full flex flex-wrap items-center justify-between py-4 bg-gray-100 text-gray-500 hover:text-gray-700 focus:text-gray-700 shadow-lg navbar navbar-expand-lg navbar-light"
@@ -39,8 +50,9 @@
           href="#"
         >
           <img
-            src="https://mdbootstrap.com/img/logo/mdb-transaprent-noshadows.png"
-            style="height: 15px"
+            class="bg-white rounded-full"
+            src="@/assets/logoUpi.webp"
+            style="height: 40px"
             alt=""
             loading="lazy"
           />
@@ -122,7 +134,7 @@
             </svg>
             <span
               class="text-white bg-red-700 absolute rounded-full text-xs -mt-2.5 ml-2 py-0 px-1.5"
-              >1</span
+              >!</span
             >
           </a>
           <ul
@@ -132,22 +144,7 @@
             <li>
               <a
                 class="dropdown-item text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-gray-700 hover:bg-gray-100"
-                href="#"
-                >Action</a
-              >
-            </li>
-            <li>
-              <a
-                class="dropdown-item text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-gray-700 hover:bg-gray-100"
-                href="#"
-                >Another action</a
-              >
-            </li>
-            <li>
-              <a
-                class="dropdown-item text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-gray-700 hover:bg-gray-100"
-                href="#"
-                >Something else here</a
+                >Belum Ada Laporan Hari Ini</a
               >
             </li>
           </ul>
@@ -176,22 +173,8 @@
             <li>
               <a
                 class="dropdown-item text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-gray-700 hover:bg-gray-100"
-                href="#"
-                >Action</a
-              >
-            </li>
-            <li>
-              <a
-                class="dropdown-item text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-gray-700 hover:bg-gray-100"
-                href="#"
-                >Another action</a
-              >
-            </li>
-            <li>
-              <a
-                class="dropdown-item text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-gray-700 hover:bg-gray-100"
-                href="#"
-                >Something else here</a
+                @click="handleLogout"
+                >Keluar Akun</a
               >
             </li>
           </ul>

@@ -18,7 +18,7 @@
     </div>
   </header> -->
   <Navbar v-if="this.$route.path != '/' && this.$route.path != '/admin'" />
-  <div v-if="this.$route.path != '/' && this.$route.path != '/admin'" class="h-16"></div>
+  <div v-if="this.$route.path != '/' && this.$route.path != '/admin'" class="h-20"></div>
   <RouterView />
 </template>
 

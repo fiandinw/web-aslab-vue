@@ -1,6 +1,16 @@
 <script setup>
   import { ref } from "vue";
+  import router from "../router";
   import { RouterLink } from "vue-router";
+  import swal from "sweetalert";
+
+  import {
+    collection,
+    getFirestore,
+    onSnapshot,
+    query,
+    where,
+  } from "firebase/firestore";
 
   const props = defineProps({
     userRole: {
@@ -11,17 +21,72 @@
 
   const roleTemplate = ref({
     userRoleCounterpart: "admin",
-    roleIdentifier: "username",
+    roleIdentifier: "nim",
+    roleIdentifierDatatype: "number",
     roleCounterpartUrl: "/admin",
   });
-
   if (props.userRole === "admin") {
     roleTemplate.value = {
       userRoleCounterpart: "asisten",
-      roleIdentifier: "nim",
+      roleIdentifier: "username",
+      roleIdentifierDatatype: "text",
       roleCounterpartUrl: "/",
     };
   }
+
+  const db = getFirestore();
+
+  const formData = ref({
+    identifier: "",
+    password: "",
+  });
+
+  const handleLogin = () => {
+    const colref = collection(db, props.userRole);
+    const q = query(
+      colref,
+      where(roleTemplate.value.roleIdentifier, "==", formData.value.identifier)
+    );
+    onSnapshot(q, (snapshot) => {
+      //console.log(snapshot.empty)
+      //console.log(snapshot.docs[0].data(), snapshot.docs[0].id)
+      if (!snapshot.empty) {
+        const id = snapshot.docs[0].id
+        const data = snapshot.docs[0].data();
+        const name = () => {
+          if (props.userRole == "asisten") {
+            return data.nama;
+          } else {
+            return (
+              data.username.charAt(0).toUpperCase() + data.username.slice(1)
+            );
+          }
+        };
+        const password = data.password;
+
+        if (formData.value.password == password) {
+          swal("Berhasil Masuk", `Selamat Datang ${name()}`, "success")
+            .then(() => {
+              if(props.userRole == 'asisten'){
+                localStorage.setItem('asistenId', id)
+                router.push("/dashboard");
+              } else {
+                localStorage.setItem('adminId', id)
+                router.push("/admin/dashboard");
+              }
+            })
+            .catch((err) => {
+              console.log(err);
+              swal("Gagal Masuk", "Error", "error");
+            });
+        } else {
+          swal("Gagal Masuk", "Salah Input Akun / Akun Tidak Ada", "warning");
+        }
+      } else {
+        swal("Gagal Masuk", "Salah Input Akun / Akun Tidak Ada", "warning");
+      }
+    });
+  };
 </script>
 
 <template>
@@ -46,18 +111,23 @@
                     </h4>
                     <h5 class="mb-12">UPI Cibiru</h5>
                   </div>
-                  <form>
+                  <form @submit.prevent="handleLogin">
                     <p class="mb-4 capitalize">Masuk Akun {{ userRole }}</p>
                     <div class="mb-4">
                       <input
-                        type="text"
+                        v-model="formData.identifier"
+                        :type="roleTemplate.roleIdentifierDatatype"
                         class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                         :id="roleTemplate.roleIdentifier"
-                        :placeholder="roleTemplate.roleIdentifier.charAt(0).toUpperCase() + roleTemplate.roleIdentifier.slice(1)"
+                        :placeholder="
+                          roleTemplate.roleIdentifier.charAt(0).toUpperCase() +
+                          roleTemplate.roleIdentifier.slice(1)
+                        "
                       />
                     </div>
                     <div class="mb-4">
                       <input
+                        v-model="formData.password"
                         type="password"
                         class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                         id="password"
@@ -67,7 +137,7 @@
                     <div class="text-center pt-1 mb-12 pb-1">
                       <button
                         class="inline-block px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg transition duration-150 ease-in-out w-full mb-3"
-                        type="button"
+                        type="submit"
                         data-mdb-ripple="true"
                         data-mdb-ripple-color="light"
                       >
@@ -85,7 +155,8 @@
                       <RouterLink
                         :to="roleTemplate.roleCounterpartUrl"
                         class="mb-0 mr-2 text-blue-500 capitalize"
-                        >Masuk Sebagai {{ roleTemplate.userRoleCounterpart }}</RouterLink
+                        >Masuk Sebagai
+                        {{ roleTemplate.userRoleCounterpart }}</RouterLink
                       >
                       <div></div>
                     </div>

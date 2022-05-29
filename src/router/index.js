@@ -27,7 +27,31 @@ const router = createRouter({
       name: 'adminLogin',
       component: () => import('../views/AdminLoginView.vue')
     },
+    {
+      path: '/dashboard',
+      name: 'dashboard',
+      component: () => import('../views/DashboardView.vue')
+    },
+    {
+      path: '/admin/dashboard',
+      name: 'adminDashboard',
+      component: () => import('../views/AdminDashboardView.vue')
+    },
+    {
+      path: '/lapor',
+      name: 'lapor',
+      component: () => import('../views/LaporView.vue')
+    },
   ]
+})
+
+router.beforeEach(async (to, from) => {
+  if ( !localStorage.getItem("asistenId") && ['dashboard', 'lapor'].includes(to.name) ) {
+    return { name: 'login' }
+  }
+  if ( !localStorage.getItem("adminId") && ['adminDashboard'].includes(to.name) ) {
+    return { name: 'adminLogin' }
+  }
 })
 
 export default router

@@ -7,7 +7,11 @@
     "preview": "vite preview --port 5050"
   },
   "dependencies": {
+    "axios": "^0.27.2",
+    "compressorjs": "^1.1.1",
+    "firebase": "^9.8.2",
     "pinia": "^2.0.13",
+    "sweetalert": "^2.1.2",
     "tw-elements": "^1.0.0-alpha12",
     "vue": "^3.2.33",
     "vue-router": "^4.0.14"
