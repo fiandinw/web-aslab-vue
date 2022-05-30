@@ -1,5 +1,12 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
+import LoginView from '../views/LoginView.vue'
+import AdminLoginView from '../views/AdminLoginView.vue'
+import DashboardView from '../views/DashboardView.vue'
+import AdminDashboardView from '../views/AdminDashboardView.vue'
+import LaporView from '../views/LaporView.vue'
+import RekapView from '../views/RekapView.vue'
+import AdminKelolaView from '../views/AdminKelolaView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -20,36 +27,52 @@ const router = createRouter({
     {
       path: '/',
       name: 'login',
-      component: () => import('../views/LoginView.vue')
+      component: LoginView
     },
     {
       path: '/admin',
       name: 'adminLogin',
-      component: () => import('../views/AdminLoginView.vue')
+      component: AdminLoginView
     },
     {
       path: '/dashboard',
       name: 'dashboard',
-      component: () => import('../views/DashboardView.vue')
+      component: DashboardView
     },
     {
       path: '/admin/dashboard',
       name: 'adminDashboard',
-      component: () => import('../views/AdminDashboardView.vue')
+      component: AdminDashboardView
     },
     {
       path: '/lapor',
       name: 'lapor',
-      component: () => import('../views/LaporView.vue')
+      component: LaporView
+    },
+    {
+      path: '/rekap',
+      name: 'rekap',
+      component: RekapView
+    },
+    {
+      path: '/admin/kelola',
+      name: 'adminKelola',
+      component: AdminKelolaView
     },
   ]
 })
 
 router.beforeEach(async (to, from) => {
-  if ( !localStorage.getItem("asistenId") && ['dashboard', 'lapor'].includes(to.name) ) {
+  if (localStorage.getItem("asistenId") && ['adminLogin','adminDashboard', 'adminKelola', 'login'].includes(to.name)){
+    return {name: 'dashboard'}
+  }
+  if (localStorage.getItem("adminId") && ['adminLogin','dashboard', 'lapor', 'login', 'rekap'].includes(to.name)){
+    return {name: 'adminDashboard'}
+  }
+  if ( !localStorage.getItem("asistenId") && ['dashboard', 'lapor', 'rekap'].includes(to.name) ) {
     return { name: 'login' }
   }
-  if ( !localStorage.getItem("adminId") && ['adminDashboard'].includes(to.name) ) {
+  if ( !localStorage.getItem("adminId") && ['adminDashboard', 'adminKelola'].includes(to.name) ) {
     return { name: 'adminLogin' }
   }
 })
