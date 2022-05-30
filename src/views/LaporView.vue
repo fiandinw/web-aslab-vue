@@ -9,7 +9,7 @@
     updateDoc,
     where,
   } from "firebase/firestore";
-  import { onBeforeMount, ref } from "vue";
+  import { onBeforeMount, onMounted, ref } from "vue";
   import { RouterLink } from "vue-router";
   import axios from "axios";
   import Compressor from "compressorjs";
@@ -53,71 +53,80 @@
     selectedImage.value = e.target.files[0];
   };
 
-  const handleSubmit = () => {
-    new Compressor(selectedImage.value, {
-      quality: 0.8,
-      maxWidth: 500,
-      success(result) {
-        const formData = new FormData();
-        formData.append("file", result);
-        formData.append("upload_preset", import.meta.env.VITE_CLOUDINARY);
-
-        axios
-          .post(
-            "https://api.cloudinary.com/v1_1/fiandinw/image/upload",
-            formData
-          )
-          .then((res) => {
-            //console.log("sukses", res.data.secure_url);
-            formInputs.value.dokumentasi = res.data.secure_url;
-
-            if (!isTodayExist) {
-              const colref = collection(db, "laporan");
-              addDoc(colref, {
-                nim: formInputs.value.nim,
-                catatan: formInputs.value.catatan,
-                luaran: formInputs.value.luaran,
-                dokumentasi: formInputs.value.dokumentasi,
-                createdAt: formInputs.value.createdAt,
-                updatedAt: formInputs.value.createdAt,
-                createYear: currentDateValues.year,
-                createMonth: currentDateValues.month,
-                createDay: currentDateValues.day,
-              }).then(() => {
-                swal(
-                  "Simpan Berhasil",
-                  "Laporan Berhasil Dibuat",
-                  "success"
-                ).then(() => {
-                  router.push("/dashboard");
-                });
-              });
-            } else {
-              const docref = doc(db, "laporan", formInputs.value.id);
-              updateDoc(docref, {
-                catatan: formInputs.value.catatan,
-                luaran: formInputs.value.luaran,
-                dokumentasi: formInputs.value.dokumentasi,
-                updatedAt: currentUnixTime,
-              }).then(() => {
-                swal(
-                  "Simpan Berhasil",
-                  "Laporan Berhasil Diubah",
-                  "success"
-                ).then(() => {
-                  router.push("/dashboard");
-                });
-              });
-            }
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-      },
-      error(err) {
-        console.log(err.message);
-      },
+  const addLaporan = () => {
+    const colref = collection(db, "laporan");
+    addDoc(colref, {
+      nim: formInputs.value.nim,
+      asistenId,
+      catatan: formInputs.value.catatan,
+      luaran: formInputs.value.luaran,
+      dokumentasi: formInputs.value.dokumentasi,
+      createdAt: formInputs.value.createdAt,
+      updatedAt: formInputs.value.createdAt,
+      createYear: currentDateValues.year,
+      createMonth: currentDateValues.month,
+      createDay: currentDateValues.day,
+    }).then(() => {
+      swal("Simpan Berhasil", "Laporan Berhasil Dibuat", "success").then(() => {
+        router.push("/dashboard");
+      });
     });
+  };
+
+  const updateLaporan = () => {
+    const docref = doc(db, "laporan", formInputs.value.id);
+    updateDoc(docref, {
+      catatan: formInputs.value.catatan,
+      luaran: formInputs.value.luaran,
+      dokumentasi: formInputs.value.dokumentasi,
+      updatedAt: currentUnixTime,
+    }).then(() => {
+      swal("Simpan Berhasil", "Laporan Berhasil Diubah", "success").then(() => {
+        router.push("/dashboard");
+      });
+    });
+  };
+
+  const laporState = () => {
+    if (isTodayExist.value) {
+      updateLaporan();
+    } else {
+      addLaporan();
+    }
+  };
+
+  const handleSubmit = () => {
+    if (selectedImage.value != "") {
+      new Compressor(selectedImage.value, {
+        quality: 0.8,
+        maxWidth: 500,
+        success(result) {
+          const formData = new FormData();
+          formData.append("file", result);
+          formData.append("upload_preset", import.meta.env.VITE_CLOUDINARY);
+
+          axios
+            .post(
+              "https://api.cloudinary.com/v1_1/fiandinw/image/upload",
+              formData
+            )
+            .then((res) => {
+              console.log("sukses", res.data.secure_url);
+              formInputs.value.dokumentasi = res.data.secure_url;
+
+              laporState();
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        },
+        error(err) {
+          console.log(err.message);
+        },
+      });
+    } else {
+      laporState();
+    }
   };
 
   getAsistenData();
@@ -126,6 +135,7 @@
     const colref = collection(db, "laporan");
     const q = query(
       colref,
+      where("asistenId", "==", asistenId),
       where("createYear", "==", currentDateValues.year),
       where("createMonth", "==", currentDateValues.month),
       where("createDay", "==", currentDateValues.day)
@@ -258,6 +268,7 @@
               type="file"
               id="dokumentasiKegiatan"
               accept=".jpg,.png,.gif,.jpeg"
+              :required="!isTodayExist"
             />
           </div>
         </div>
