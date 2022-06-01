@@ -212,13 +212,14 @@
             data-bs-toggle="dropdown"
             aria-expanded="false"
           >
-            <img
+            <!-- <img
               src="https://mdbootstrap.com/img/new/avatars/2.jpg"
               class="rounded-full"
               style="height: 25px; width: 25px"
               alt=""
               loading="lazy"
-            />
+            /> -->
+            <i class="fa fa-user-circle fa-lg" aria-hidden="true"></i>
           </a>
           <ul
             class="dropdown-menu min-w-max absolute bg-white text-base z-50 float-left py-2 list-none text-left rounded-lg shadow-lg mt-1 hidden m-0 bg-clip-padding border-none left-auto right-0"
@@ -385,13 +386,14 @@
             data-bs-toggle="dropdown"
             aria-expanded="false"
           >
-            <img
+            <!-- <img
               src="https://mdbootstrap.com/img/new/avatars/2.jpg"
               class="rounded-full"
               style="height: 25px; width: 25px"
               alt=""
               loading="lazy"
-            />
+            /> -->
+            <i class="fa fa-user-circle fa-lg" aria-hidden="true"></i>
           </a>
           <ul
             class="dropdown-menu min-w-max absolute bg-white text-base z-50 float-left py-2 list-none text-left rounded-lg shadow-lg mt-1 hidden m-0 bg-clip-padding border-none left-auto right-0"

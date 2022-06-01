@@ -65,7 +65,10 @@
         const password = data.password;
 
         if (formData.value.password == password) {
-          swal("Berhasil Masuk", `Selamat Datang ${name()}`, "success")
+          if(data.statusAsisten == false){
+            swal("Gagal Masuk", "Akun Asisten Tidak Aktif", "warning");
+          }else{
+            swal("Berhasil Masuk", `Selamat Datang ${name()}`, "success")
             .then(() => {
               if(props.userRole == 'asisten'){
                 localStorage.setItem('asistenId', id)
@@ -79,6 +82,7 @@
               console.log(err);
               swal("Gagal Masuk", "Error", "error");
             });
+          }
         } else {
           swal("Gagal Masuk", "Salah Input Akun / Akun Tidak Ada", "warning");
         }
@@ -170,7 +174,7 @@
                   class="text-white px-4 py-6 md:p-12 md:mx-6 bg-gray-600 bg-opacity-60 rounded-lg"
                 >
                   <h4 class="text-xl font-semibold mb-6">
-                    We are more than just a company
+                    Selamat Datang di Sistem Pelaporan Kegiatan Asisten Laboratorium Pendidikan Multimedia UPI Kampus Cibiru
                   </h4>
                   <p class="text-sm">
                     Lorem ipsum dolor sit amet, consectetur adipisicing elit,

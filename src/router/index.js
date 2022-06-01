@@ -7,6 +7,7 @@ import AdminDashboardView from '../views/AdminDashboardView.vue'
 import LaporView from '../views/LaporView.vue'
 import RekapView from '../views/RekapView.vue'
 import AdminKelolaView from '../views/AdminKelolaView.vue'
+import AdminRekapView from '../views/AdminRekapView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -59,11 +60,16 @@ const router = createRouter({
       name: 'adminKelola',
       component: AdminKelolaView
     },
+    {
+      path: '/admin/rekap',
+      name: 'adminRekap',
+      component: AdminRekapView
+    },
   ]
 })
 
 router.beforeEach(async (to, from) => {
-  if (localStorage.getItem("asistenId") && ['adminLogin','adminDashboard', 'adminKelola', 'login'].includes(to.name)){
+  if (localStorage.getItem("asistenId") && ['adminLogin','adminDashboard', 'adminKelola','adminRekap', 'login'].includes(to.name)){
     return {name: 'dashboard'}
   }
   if (localStorage.getItem("adminId") && ['adminLogin','dashboard', 'lapor', 'login', 'rekap'].includes(to.name)){
@@ -72,7 +78,7 @@ router.beforeEach(async (to, from) => {
   if ( !localStorage.getItem("asistenId") && ['dashboard', 'lapor', 'rekap'].includes(to.name) ) {
     return { name: 'login' }
   }
-  if ( !localStorage.getItem("adminId") && ['adminDashboard', 'adminKelola'].includes(to.name) ) {
+  if ( !localStorage.getItem("adminId") && ['adminDashboard', 'adminKelola', 'adminRekap'].includes(to.name) ) {
     return { name: 'adminLogin' }
   }
 })
