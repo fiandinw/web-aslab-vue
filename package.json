@@ -11,6 +11,7 @@
     "compressorjs": "^1.1.1",
     "firebase": "^9.8.2",
     "pinia": "^2.0.13",
+    "print-js": "^1.6.0",
     "sweetalert": "^2.1.2",
     "tw-elements": "^1.0.0-alpha12",
     "vue": "^3.2.33",
