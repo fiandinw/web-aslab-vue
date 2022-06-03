@@ -229,8 +229,8 @@
               <label
                 class="form-check-label inline-block text-gray-800"
                 for="flexSwitchCheckDefault"
-                >Status Asisten</label
-              >
+                >Status Asisten&nbsp;</label
+              ><span v-if="formInputs.statusAsisten">(Aktif)</span><span v-else>(Tidak Aktif)</span>
             </div>
             <button
               type="submit"
