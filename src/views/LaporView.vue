@@ -47,6 +47,12 @@
     createdAt: currentUnixTime,
   });
 
+  const catatanCheck = ref({
+    piket:false,
+    mengawas:false,
+    mengajar:false,
+  })
+
   const selectedImage = ref("");
 
   const handleFile = (e) => {
@@ -167,13 +173,14 @@
                 currentDateValues.month
               }}-{{ currentDateValues.year }}
             </h5>
-            <div class="inline-block mb-2 text-gray-700">Catatan Harian</div>
+            <!-- <div class="inline-block mb-2 text-gray-700">Catatan Harian</div>
             <div class="form-check">
               <input
                 class="form-check-input appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
                 type="checkbox"
                 value="Piket Laboratorium"
                 id="catatan1"
+                v-model="catatanCheck.piket"
               />
               <label
                 class="form-check-label inline-block text-gray-800"
@@ -188,6 +195,7 @@
                 type="checkbox"
                 value="Mengawas Kegiatan Perkuliahan"
                 id="catatan2"
+                v-model="catatanCheck.mengawas"
               />
               <label
                 class="form-check-label inline-block text-gray-800"
@@ -202,6 +210,7 @@
                 type="checkbox"
                 value="Asisten Mengajar Kuliah"
                 id="catatan3"
+                v-model="catatanCheck.mengajar"
               />
               <label
                 class="form-check-label inline-block text-gray-800"
@@ -209,7 +218,7 @@
               >
                 Asisten Mengajar Kuliah
               </label>
-            </div>
+            </div> -->
           </div>
         </div>
 
@@ -218,14 +227,15 @@
             <label
               for="catatanTambahan"
               class="form-label inline-block mb-2 text-gray-700"
-              >Catatan Tambahan</label
+              >Catatan Laporan</label
             >
             <textarea
               v-model="formInputs.catatan"
               class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
               id="catatanTambahan"
               rows="3"
-              placeholder="Tulis Catatan Tambahan"
+              placeholder="Tulis Catatan Laporan (mengawas ujian, piket, asisten mengajar, dll)"
+              required
             ></textarea>
           </div>
         </div>
@@ -242,7 +252,7 @@
               class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
               id="luaranKegiatan"
               rows="3"
-              placeholder="Tulis Luaran Kegiatan"
+              placeholder="Tulis Luaran Kegiatan (maintenance lab, instalasi aplikasi, nilai mahasiswa mata kuliah, dll)"
               required
             ></textarea>
           </div>

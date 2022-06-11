@@ -49,6 +49,7 @@
       where("createDay", "==", currentDateValues.day)
     );
     onSnapshot(q, (snapshot) => {
+      //console.log(snapshot.docs[0].data().catatan)
       if (!snapshot.empty) {
         isTodayExist.value = true;
       }
@@ -227,7 +228,7 @@
           >
             <li>
               <a
-                class="dropdown-item text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-gray-700 hover:bg-gray-100"
+                class="dropdown-item text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-gray-700 hover:bg-gray-100 cursor-pointer"
                 @click="handleLogout"
                 >Keluar Akun</a
               >
@@ -401,7 +402,7 @@
           >
             <li>
               <a
-                class="dropdown-item text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-gray-700 hover:bg-gray-100"
+                class="dropdown-item text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-gray-700 hover:bg-gray-100 cursor-pointer"
                 @click="handleLogout"
                 >Keluar Akun</a
               >
