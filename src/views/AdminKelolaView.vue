@@ -36,31 +36,41 @@
         snapshot.docs.forEach((each) => {
           asistenData.value.push({ id: each.id, ...each.data() });
         });
-        const arr = asistenData.value
-        arr.sort((a, b) => {return a.createdAt - b.createdAt})
-        asistenData.value = arr
+        const arr = asistenData.value;
+        arr.sort((a, b) => {
+          return a.createdAt - b.createdAt;
+        });
+        asistenData.value = arr;
       }
     });
   };
   getAsistenData();
 
   const buatAkun = () => {
-    addDoc(colref, {
-      nim: formInputs.value.nim,
-      nama: formInputs.value.nama,
-      email: formInputs.value.email,
-      password: formInputs.value.password,
-      statusAsisten: formInputs.value.statusAsisten,
-      createdAt: currentUnixTime
-    }).then(() => {
-      swal(
-        "Berhasil Dibuat",
-        "Akun Asisten Baru Berhasil Dibuat",
-        "success"
-      ).then(() => {
-        window.location.reload();
+    if (
+      asistenData.value.find((el) => {
+        return el.nim == formInputs.value.nim;
+      })
+    ) {
+      swal("Tambah Asisten Gagal", "NIM sudah ada", "warning");
+    } else {
+      addDoc(colref, {
+        nim: formInputs.value.nim,
+        nama: formInputs.value.nama,
+        email: formInputs.value.email,
+        password: formInputs.value.password,
+        statusAsisten: formInputs.value.statusAsisten,
+        createdAt: currentUnixTime,
+      }).then(() => {
+        swal(
+          "Berhasil Dibuat",
+          "Akun Asisten Baru Berhasil Dibuat",
+          "success"
+        ).then(() => {
+          window.location.reload();
+        });
       });
-    });
+    }
   };
 
   const handleSubmit = (e) => {
@@ -230,7 +240,8 @@
                 class="form-check-label inline-block text-gray-800"
                 for="flexSwitchCheckDefault"
                 >Status Asisten&nbsp;</label
-              ><span v-if="formInputs.statusAsisten">(Aktif)</span><span v-else>(Tidak Aktif)</span>
+              ><span v-if="formInputs.statusAsisten">(Aktif)</span
+              ><span v-else>(Tidak Aktif)</span>
             </div>
             <button
               type="submit"

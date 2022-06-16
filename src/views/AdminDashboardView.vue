@@ -8,11 +8,13 @@
       icon="fa-users"
       display-name="Kelola Akun Asisten"
       link-to="/admin/kelola"
+      description="Buat, Ubah, dan Hapus akun asisten"
     />
     <MainButton
       icon="fa-list-alt"
       display-name="Lihat Rekap Laporan"
       link-to="/admin/rekap"
+      description="Lihat semua rekap asisten dan print"
     />
   </div>
 </template>

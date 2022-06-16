@@ -48,10 +48,10 @@
   });
 
   const catatanCheck = ref({
-    piket:false,
-    mengawas:false,
-    mengajar:false,
-  })
+    piket: false,
+    mengawas: false,
+    mengajar: false,
+  });
 
   const selectedImage = ref("");
 
@@ -277,7 +277,7 @@
               class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
               type="file"
               id="dokumentasiKegiatan"
-              accept=".jpg,.png,.gif,.jpeg"
+              accept="image/png, image/jpeg"
               :required="!isTodayExist"
             />
           </div>
