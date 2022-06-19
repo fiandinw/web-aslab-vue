@@ -56,7 +56,11 @@
     onSnapshot(q, (snapshot) => {
       if (!snapshot.empty) {
         snapshot.docs.forEach((each) => {
-          dataLaporan.value.push({ ...each.data(), id: each.id });
+          //console.log(each.data().nim);
+          console.log();
+          if (asistenAktif.value.find((el) => el.nim == each.data().nim)) {
+            dataLaporan.value.push({ ...each.data(), id: each.id });
+          }
         });
         const arr = dataLaporan.value;
         arr.sort((a, b) => {
