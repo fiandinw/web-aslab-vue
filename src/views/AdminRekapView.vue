@@ -305,11 +305,13 @@
                   <td
                     class="text-sm text-gray-900 font-light px-2 py-2 border-x-2 whitespace-nowrap"
                   >
-                    <img
-                      class="h-[50px] object-cover"
-                      :src="item.dokumentasi"
-                      alt="dokumentasi"
-                    />
+                    <a :href="item.dokumentasi" target="_blank">
+                      <img
+                        class="h-[50px] object-cover"
+                        :src="item.dokumentasi"
+                        alt="dokumentasi"
+                      />
+                    </a>
                   </td>
                 </tr>
               </tbody>

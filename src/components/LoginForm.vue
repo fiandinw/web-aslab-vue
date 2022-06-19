@@ -51,7 +51,7 @@
       //console.log(snapshot.empty)
       //console.log(snapshot.docs[0].data(), snapshot.docs[0].id)
       if (!snapshot.empty) {
-        const id = snapshot.docs[0].id
+        const id = snapshot.docs[0].id;
         const data = snapshot.docs[0].data();
         const name = () => {
           if (props.userRole == "asisten") {
@@ -65,23 +65,23 @@
         const password = data.password;
 
         if (formData.value.password == password) {
-          if(data.statusAsisten == false){
+          if (data.statusAsisten == false) {
             swal("Gagal Masuk", "Akun Asisten Tidak Aktif", "warning");
-          }else{
+          } else {
             swal("Berhasil Masuk", `Selamat Datang ${name()}`, "success")
-            .then(() => {
-              if(props.userRole == 'asisten'){
-                localStorage.setItem('asistenId', id)
-                router.push("/dashboard");
-              } else {
-                localStorage.setItem('adminId', id)
-                router.push("/admin/dashboard");
-              }
-            })
-            .catch((err) => {
-              console.log(err);
-              swal("Gagal Masuk", "Error", "error");
-            });
+              .then(() => {
+                if (props.userRole == "asisten") {
+                  localStorage.setItem("asistenId", id);
+                  router.push("/dashboard");
+                } else {
+                  localStorage.setItem("adminId", id);
+                  router.push("/admin/dashboard");
+                }
+              })
+              .catch((err) => {
+                console.log(err);
+                swal("Gagal Masuk", "Error", "error");
+              });
           }
         } else {
           swal("Gagal Masuk", "Salah Input Akun / Akun Tidak Ada", "warning");
@@ -174,13 +174,14 @@
                   class="text-white px-4 py-6 md:p-12 md:mx-6 bg-gray-600 bg-opacity-60 rounded-lg"
                 >
                   <h4 class="text-xl font-semibold mb-6">
-                    Selamat Datang di Sistem Pelaporan Kegiatan Asisten Laboratorium Pendidikan Multimedia UPI Kampus Cibiru
+                    Selamat Datang di Sistem Pelaporan Kegiatan Asisten
+                    Laboratorium Pendidikan Multimedia UPI Kampus Cibiru
                   </h4>
                   <p class="text-sm">
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-                    sed do eiusmod tempor incididunt ut labore et dolore magna
-                    aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                    ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                    Web ini berfungsi sebagai media untuk pelaporan kegiatan
+                    harian asisten laboratorium di Prodi Pendidikan Multimedia
+                    UPI Cibiru. Data laporan akan terintegrasi dengan database
+                    dan dapat digunakan untuk keperluan cetak administrasi.
                   </p>
                 </div>
               </div>
