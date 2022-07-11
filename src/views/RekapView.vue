@@ -9,20 +9,34 @@
   import { ref } from "vue";
   import { RouterLink } from "vue-router";
   const asistenId = localStorage.getItem("asistenId");
+
+  const currentUnixTime = new Date().getTime();
+  const currentReadableDate = new Date(currentUnixTime);
+  const currentDateValues = {
+    year: currentReadableDate.getFullYear(),
+    month: currentReadableDate.getMonth() + 1,
+    day: currentReadableDate.getDate(),
+  };
+
+  const isTodayExist = ref(false);
+
   const rekapData = ref([]);
   const db = getFirestore();
   const colref = collection(db, "laporan");
   const q = query(colref, where("asistenId", "==", asistenId));
   onSnapshot(q, (snapshot) => {
-    //console.log(snapshot.empty)
-    // console.log(snapshot.docs[0].data());
     if (!snapshot.empty) {
       snapshot.forEach((each) => {
         rekapData.value.push(each.data());
-        const arr = rekapData.value
-        arr.sort((a, b) => {return a.createdAt - b.createdAt})
-        rekapData.value = arr
       });
+      const arr = rekapData.value;
+      arr.sort((a, b) => {
+        return b.createdAt - a.createdAt;
+      });
+      rekapData.value = arr;
+      if (rekapData.value[0].createDay == currentDateValues.day) {
+        isTodayExist.value = true;
+      }
     }
   });
 </script>
@@ -73,6 +87,13 @@
                 >
                   Dokumentasi
                 </th>
+                <th
+                  v-if="isTodayExist"
+                  scope="col"
+                  class="text-sm font-medium text-gray-900 px-6 py-4 text-left"
+                >
+                  Aksi
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -109,6 +130,19 @@
                       alt="dokumentasi"
                     />
                   </a>
+                </td>
+                <td
+                  v-if="key == 0"
+                  class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap"
+                >
+                  <RouterLink :to="{ name: 'lapor' }">
+                    <button
+                      type="button"
+                      class="inline-block px-6 py-2.5 bg-yellow-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-yellow-700 hover:shadow-lg focus:bg-yellow-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-yellow-800 active:shadow-lg transition duration-150 ease-in-out"
+                    >
+                      Ubah
+                    </button>
+                  </RouterLink>
                 </td>
               </tr>
             </tbody>

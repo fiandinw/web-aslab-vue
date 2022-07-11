@@ -56,7 +56,15 @@
   const selectedImage = ref("");
 
   const handleFile = (e) => {
-    selectedImage.value = e.target.files[0];
+    if (["image/png", "image/jpeg"].includes(e.target.files[0].type)) {
+      selectedImage.value = e.target.files[0];
+    } else {
+      swal(
+        "Format Dokumentasi Tidak Didukung",
+        "Mohon Unggah Bukti berupa Gambar",
+        "warning"
+      );
+    }
   };
 
   const addLaporan = () => {
@@ -103,33 +111,42 @@
 
   const handleSubmit = () => {
     if (selectedImage.value != "") {
-      new Compressor(selectedImage.value, {
-        quality: 0.8,
-        maxWidth: 500,
-        success(result) {
-          const formData = new FormData();
-          formData.append("file", result);
-          formData.append("upload_preset", import.meta.env.VITE_CLOUDINARY);
+      if (["image/png", "image/jpeg"].includes(selectedImage.value.type)) {
+        new Compressor(selectedImage.value, {
+          quality: 0.8,
+          maxWidth: 500,
+          success(result) {
+            const formData = new FormData();
+            formData.append("file", result);
+            formData.append("upload_preset", import.meta.env.VITE_CLOUDINARY);
 
-          axios
-            .post(
-              "https://api.cloudinary.com/v1_1/fiandinw/image/upload",
-              formData
-            )
-            .then((res) => {
-              console.log("sukses", res.data.secure_url);
-              formInputs.value.dokumentasi = res.data.secure_url;
+            axios
+              .post(
+                "https://api.cloudinary.com/v1_1/fiandinw/image/upload",
+                formData
+              )
+              .then((res) => {
+                console.log("sukses", res.data.secure_url);
+                formInputs.value.dokumentasi = res.data.secure_url;
 
-              laporState();
-            })
-            .catch((err) => {
-              console.log(err);
-            });
-        },
-        error(err) {
-          console.log(err.message);
-        },
-      });
+                laporState();
+              })
+              .catch((err) => {
+                console.log(err);
+              });
+          },
+          error(err) {
+            console.log(err.message);
+          },
+        });
+      } else {
+        console.log("ispdf");
+        swal(
+          "Format Dokumentasi Tidak Didukung",
+          "Mohon Unggah Bukti berupa Gambar",
+          "warning"
+        );
+      }
     } else {
       laporState();
     }
@@ -277,7 +294,7 @@
               class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
               type="file"
               id="dokumentasiKegiatan"
-              accept="image/png, image/jpeg"
+              accept="image/png, image/jpeg, application/pdf"
               :required="!isTodayExist"
             />
           </div>

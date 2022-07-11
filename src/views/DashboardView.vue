@@ -1,6 +1,5 @@
 <script setup>
   import MainButton from "../components/MainButton.vue";
-  import undrawCheck from "../assets/undraw_done_checking_re_6vyx.svg";
   import checklistImg from "../assets/checklist.png";
   import calendarImg from "../assets/calendar.png";
   import { doc, getFirestore, onSnapshot } from "@firebase/firestore";

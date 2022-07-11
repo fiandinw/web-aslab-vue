@@ -48,8 +48,6 @@
       where(roleTemplate.value.roleIdentifier, "==", formData.value.identifier)
     );
     onSnapshot(q, (snapshot) => {
-      //console.log(snapshot.empty)
-      //console.log(snapshot.docs[0].data(), snapshot.docs[0].id)
       if (!snapshot.empty) {
         const id = snapshot.docs[0].id;
         const data = snapshot.docs[0].data();
@@ -63,7 +61,6 @@
           }
         };
         const password = data.password;
-
         if (formData.value.password == password) {
           if (data.statusAsisten == false) {
             swal("Gagal Masuk", "Akun Asisten Tidak Aktif", "warning");

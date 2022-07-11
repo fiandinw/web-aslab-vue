@@ -13,7 +13,6 @@
 
   const asistenId = localStorage.getItem("asistenId");
   const adminId = localStorage.getItem("adminId");
-  
 
   const currentUnixTime = new Date().getTime();
   const currentReadableDate = new Date(currentUnixTime);
@@ -49,7 +48,6 @@
       where("createDay", "==", currentDateValues.day)
     );
     onSnapshot(q, (snapshot) => {
-      //console.log(snapshot.docs[0].data().catatan)
       if (!snapshot.empty) {
         isTodayExist.value = true;
       }
